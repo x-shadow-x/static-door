@@ -7,6 +7,7 @@ const promisify = require('util').promisify;
 const stat = promisify(fs.stat);
 const readdir = promisify(fs.readdir);
 
+const compress = require('./help/compress');
 const conf = require('./config/default-conf');
 
 const tplPath = path.join(__dirname, './template/dir.tpl');
@@ -16,17 +17,21 @@ const template = Handlebars.compile(source.toString());
 class Server {
     async handleFile(reqPath, req, res) {
         res.statusCode = 200;
-        const rs = fs.createReadStream(reqPath);
+        res.setHeader('Content-Type', 'text/plain;charset=utf-8');
+        // 将文件通过createReadStream读出并传递给自定义的压缩处理函数，得到压缩后的结果返回
+        const rs = compress(fs.createReadStream(reqPath), req, res);
+        // const rs = fs.createReadStream(reqPath);
         rs.pipe(res);
     }
     async handleDir(reqPath, req, res) {
         const files = await readdir(reqPath);
         res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/html');
+        res.setHeader('Content-Type', 'text/html;charset=utf-8');
         const data = {
             title: `${reqPath}目录文件列表`,
             fileList: files.map(item => {
-                const dir = path.relative(conf.root, reqPath);
+                let dir = path.relative(conf.root, reqPath);
+                dir = dir ? `/${dir}` : '';
                 return {
                     href: path.join(dir, item),
                     fileName: item
@@ -51,11 +56,9 @@ class Server {
                     error: error.toString()
                 });
             }
-            
-            // res.end('hello world');
         });
         
-        server.listen(conf.port, conf.hostName, () => {
+        server.listen(conf.port, () => {
             const url = `http://${conf.hostName}:${conf.port}`;
             console.info(`server is running at ${chalk.green(url)}`);
         });

@@ -1,32 +1,39 @@
 {
-  "name": "static-door",
-  "version": "0.0.1",
-  "description": "静态资源服务器",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/x-shadow-x/static-door.git"
-  },
-  "keywords": [
-    "静态资源服务器"
-  ],
-  "author": "junyanliu",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/x-shadow-x/static-door/issues"
-  },
-  "homepage": "https://github.com/x-shadow-x/static-door#readme",
-  "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.3.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0"
-  },
-  "dependencies": {
-    "chalk": "^2.4.1",
-    "handlebars": "^4.0.12"
-  }
+    "name": "static-door",
+    "version": "0.0.1",
+    "description": "静态资源服务器",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "eslint .",
+        "fix": "eslint --fix ."
+    },
+    "pre-commit": [
+        "fix",
+        "lint"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/x-shadow-x/static-door.git"
+    },
+    "keywords": [
+        "静态资源服务器"
+    ],
+    "author": "junyanliu",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/x-shadow-x/static-door/issues"
+    },
+    "homepage": "https://github.com/x-shadow-x/static-door#readme",
+    "devDependencies": {
+        "babel-eslint": "^10.0.1",
+        "eslint": "^5.3.0",
+        "eslint-config-airbnb-base": "^13.1.0",
+        "eslint-plugin-import": "^2.14.0",
+        "pre-commit": "^1.2.2"
+    },
+    "dependencies": {
+        "chalk": "^2.4.1",
+        "handlebars": "^4.0.12"
+    }
 }
